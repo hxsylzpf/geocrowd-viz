@@ -33,6 +33,13 @@ class Geocast extends CI_Controller {
 		$this->load->view ( 'templates/footer.php' );
 	}
 	
+		/**
+	 * Index Page for this controller
+	 */
+	public function test() {
+		$this->load->view ( 'test/barchart.html' );
+	}
+	
 	/**
 	 * Load sample tasks
 	 */

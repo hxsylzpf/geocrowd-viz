@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <!-- India State Map  -->
+    <title>India Map</title>
+    <style type="text/css">
+        svg {
+            background: #fff;
+        }
+
+        #india {
+            fill: #95a5a6;
+            opacity: .8;
+            stroke: white ;
+            stroke-width: 1.2;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="chart"></div>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.13/d3.min.js"></script>
+    <script type="text/javascript">
+        var w = 600;
+        var h = 600;
+        var bounds = [[68,38], [97, 8]];  // rough extents of India
+        var proj = d3.geo.mercator()
+                         .scale(800)
+                         .translate([w/2,h/2])
+                         .rotate([(bounds[0][0] + bounds[1][0]) / -2, 
+                                  (bounds[0][1] + bounds[1][1]) / -2]); // rotate the project to bring India into view.
+
+        var path = d3.geo.path().projection(proj);
+
+        var map = d3.select("#chart").append("svg:svg")
+                    .attr("width", w)
+                    .attr("height", h);
+
+        var india = map.append("svg:g")
+                       .attr("id", "india");
+
+
+        d3.csv("../../res/flowers.csv", function(csv) {
+            india.selectAll("circle")
+                 .data(csv)
+               .enter()
+                 .append("circle")
+                 .attr("cx", function (d) {
+                     return proj([d.lon, d.lat])[0];
+                 })
+                 .attr("cy", function (d) {
+                     return proj([d.lon, d.lat])[1];
+                 })
+                 .attr("r", function (d) {
+                     return 5;
+                 })
+                 .style("fill", "black");
+        });
+
+    </script>
+</body>
